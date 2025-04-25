@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/estiloslaeconomia.css">
+</head>
+<body>
+    <header>
+        <div class="navbar navbar-expand-sm">
+            <div class="container-fluid">
+                <ul class="navbar-nav">
+                    <li class="navbar-brand"><img src="assets/shwemp.jpeg" width="50" height="50" style="border-radius: 100px;"></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html"><h4>Log-in</h4></a></li>
+                    <li class="nav-item"><a class="nav-link disabled" href="index.html"><h4>Home</h4></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="hover" data-bs-toggle="dropdown"><h4>More</h4></a>
+                    <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Contact us</a></li>
+                            <li><a class="dropdown-item" href="#">Know more</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="text" placeholder="Search">
+                    <button class="btn btn-light" type="button">Search</button>
+                </form>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-xl-6">
+                <div class="image-container">
+                    <div class="image-text"><p>CREA TU CUENTA</p></div>
+                    <img src="assets/shwemp.jpeg" width="500" style="border-radius: 50px;">
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-xl-6">
+                <div class="registration-form">
+                    <!-- Formulario de registro -->
+                    <p>Crea tu cuenta y goza de los contenidos de nuestra pagina</p>
+                    <form>
+                        <div class="form-group py-3">
+                            <input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre">
+                        </div>
+                        <div class="form-group py-3">
+                            <input type="text" class="form-control" id="apellidos" placeholder=" apellidos">
+                        </div>
+                        <div class="form-group py-3">
+                            <input type="email" class="form-control" id="correo" placeholder="correo">
+                        </div>
+                        <div class="form-group py-3">
+                            <input type="password" class="form-control" id="contrasena" placeholder=" contraseña">
+                        </div>
+                        <div class="form-group py-3">
+                            <input type="password" class="form-control" id="confirmacion-contrasena" placeholder="Confirme contraseña">
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block">Crear cuenta</button>
+                    </form>
+                    <p>Todo lo mejor solo para las cuentas registradas!!!!11111!!!!1111!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
