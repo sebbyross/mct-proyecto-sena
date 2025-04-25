@@ -36,7 +36,7 @@ header {
 .section-divider {
     border: 0;
     height: 2px;
-    background: linear-gradient(to right, #ccc, #000, #ccc);
+    background: linear-gradient(to right, #008cff, #000, #008cff);
     margin: 30px 0;
 }
 
@@ -107,7 +107,8 @@ header {
 }
 
 .navbar{
-    margin: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
     background-color: #4a90e2;
     border-radius: 8px;
 }
