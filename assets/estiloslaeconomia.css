@@ -36,7 +36,7 @@ header {
 .section-divider {
     border: 0;
     height: 2px;
-    background: linear-gradient(to right, #008cff, #000, #008cff);
+    background: linear-gradient(to right, #ffffff, #000, #ffffff);
     margin: 30px 0;
 }
 
