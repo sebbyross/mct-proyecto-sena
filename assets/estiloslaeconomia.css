@@ -109,18 +109,18 @@ header {
 .navbar{
     margin-left: 10px;
     margin-right: 10px;
-    background-color: #4a90e2;
+    background-color: #e93434;
     border-radius: 8px;
 }
 
 a{
-    color: #50e3c2;
+    color: #28302e;
     text-decoration: none;
     
 }
 a:hover{
     text-decoration: none;
-    color: #4178be;
+    color: #be4141;
 }
 
 
