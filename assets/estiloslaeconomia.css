@@ -16,6 +16,10 @@ header {
     z-index: 1000; 
 }
 
+h1 {
+    color:#be4141;
+}
+
 .container{
     padding: 20px;
     margin: 10px;
@@ -53,7 +57,7 @@ header {
 
 .login-container {
     background-color: #fff;
-    padding: 20px;
+    padding: 30px;
     border-radius: 10px;
     border: 2px solid black;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -84,7 +88,7 @@ header {
     width: auto;
     padding: 10px;
     float: left;
-    background-color: lightgreen;
+    background-color: rgb(224, 66, 66);
     color: #fff;
     border: none;
     border-radius: 3px;
@@ -92,7 +96,13 @@ header {
 }
 
 .form-group button:hover {
-    background-color: green;
+    background-color: rgb(128, 0, 0);
+}
+
+.btn {
+    background-color:#e93434;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 #checkme{
@@ -116,7 +126,6 @@ header {
 a{
     color: #28302e;
     text-decoration: none;
-    
 }
 a:hover{
     text-decoration: none;
