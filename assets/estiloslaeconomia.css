@@ -2,22 +2,18 @@ body {
     font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color: #333333;
     background-color: #f4f4f9; /* Light Grayish White */
-    margin: 100px;
     padding: 10px;
 }
 
 header {
     color: #ffffff;
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: auto;
-    z-index: 1000; 
+    z-index: 1000;
 }
 
 h1 {
     color:#be4141;
+    font-size:3vw
 }
 
 .container{
@@ -28,6 +24,7 @@ h1 {
 #logo1{
     padding: 10px;
     border-radius: 50px;
+    max-width:100%;
     height: 100%;
     width: 100%;
 }
@@ -103,11 +100,6 @@ h1 {
     background-color:#e93434;
     margin-left: 20px;
     margin-right: 20px;
-}
-
-#checkme{
-    justify-content: left;
-    padding: 10px;
 }
 
 

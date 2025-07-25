@@ -5,39 +5,57 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Inventarios MCT</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/estiloslaeconomia.css">
 </head>
 <body>
-    <header>
-        <div class="navbar navbar-expand-sm">
-            <div class="container-fluid">
-                <ul class="navbar-nav">
-                    <li class="navbar-brand"><img src="assets/shwemp.jpeg" width="50" height="50" style="border-radius: 100px;"></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html"><h4>Iniciar Sesion</h4></a></li>
-                    <li class="nav-item"><a class="nav-link disabled" href="regis.html"><h4>Registrate</h4></a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="hover" data-bs-toggle="dropdown"><h4>Mas</h4></a>
-                    <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Contactanos</a></li>
-                            <li><a class="dropdown-item" href="#">Descubre mas</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="text" placeholder="Buscar...">
-                    <button class="btn btn-light" type="button">Buscar</button>
-                </form>
-            </div>
-        </div>
-    </header>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-danger">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><img src="assets/shwemp.jpeg" width="50" height="50" style="border-radius: 100px;"></a>
+        
+        <!-- Botón de colapso -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Contenido colapsable -->
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+            <a class="nav-link" href="login.html"><h4>Iniciar Sesión</h4></a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="regis.html"><h4>Regístrate</h4></a>
+            </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <h4>Más</h4>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" href="#">Contáctanos</a></li>
+                <li><a class="dropdown-item" href="#">Descubre más</a></li>
+            </ul>
+        </li>
+        </ul>
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Buscar">
+            <button class="btn btn-light" type="submit">Buscar</button>
+        </form>
+    </div>
+    </div>
+</nav>
+</header>
+
     <!-- CUERPO -->
 <div class="container">
     <div class="row">
-        <div class="col-sm-12 col-md-6 col-xl-6">
+        <div class="col-sm-12 col-md-12 col-xl-6">
             <img src="assets/shwemp.jpeg" class="image" id="logo1">
         </div>
-        <div class="col-sm-12 col-md-6 col-xl-6" id="parag1">
+        <div class="col-sm-12 col-md-12 col-xl-6" id="parag1">
             <h2>Bienvenido a los inventarios!!, aquí administras el stock del negocio, <a href="regis.html">regístrate</a> o <a href="login.html">inicia sesión para comenzar</a></h2>
         </div>
     </div>
@@ -51,11 +69,11 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-12 col-md-5 col-xl-6">
+        <div class="col-sm-12 col-md-12 col-xl-6">
             <h1>Misión</h1>
             <p class="parag2">En MCT S.A.S, MARKETING E INVERSIONES S.A.S. y FERRICAR S.A.S. nos enfocamos en ser líderes en logística, ofreciendo soluciones integradas de transporte, almacenamiento y distribución. A través de nuestro servicio 3PL, optimizamos los procesos de nuestros clientes, mejorando su competitividad. Cada empresa aporta su especialidad: MCT S.A.S. en transporte masivo y almacenamiento, FERRICAR S.A.S. en distribución nacional y MARKETING E INVERSIONES S.A.S. en infraestructura de almacenamiento de alta capacidad. Garantizando soluciones logísticas sostenibles, tecnológicas y personalizadas, comprometiéndonos a generar valor a largo plazo, siendo un socio estratégico para el éxito de nuestros clientes, contribuyendo al desarrollo económico y sostenible del país.</p>
         </div>
-        <div class="col-sm-12 col-md-7 col-xl-6">
+        <div class="col-sm-12 col-md-12 col-xl-6">
             <img src="assets/mct-truck.jpg" alt="demostración" id="truck1">
         </div>
     </div>
@@ -63,10 +81,10 @@
 <hr class="section-divider">
 <div class="container">
     <div class="row">
-        <div class="col-sm-12 col-md-5 col-xl-6">
+        <div class="col-sm-12 col-md-12 col-xl-6">
             <img src="assets/vision.png" alt="demostración" id="truck1">
         </div>
-        <div class="col-sm-12 col-md-7 col-xl-6">
+        <div class="col-sm-12 col-md-12 col-xl-6">
             <h1>Visión</h1>
             <p class="parag2">Para el año 2034, MCT S.A.S, MARKETING E INVERSIONES S.A.S. y FERRICAR S.A.S. serán reconocidas como las empresas líderes en soluciones logísticas integradas a nivel nacional, consolidándose como el referente principal en el sector de 3PL (Third Party Logistics). Combinaremos nuestras fortalezas para ofrecer soluciones de alta eficiencia, seguras, innovadoras y confiables a nuestros clientes. A través de la implementación de tecnología de vanguardia, la personalización de nuestros servicios y un fuerte compromiso con la sostenibilidad ambiental y la responsabilidad social.</p>
         </div>
