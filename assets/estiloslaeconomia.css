@@ -30,6 +30,12 @@ h1 {
     width: 100%;
 }
 
+#socials{
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #parag1{
     padding-top: 100px;
     padding-bottom: 100px;
