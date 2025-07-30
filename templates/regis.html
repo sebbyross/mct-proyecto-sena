@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/estiloslaeconomia.css">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-danger">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="index.html"><img src="assets/shwemp.jpeg" width="50" height="50" style="border-radius: 100px;"></a>
+        
+        <!-- Botón de colapso -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Contenido colapsable -->
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('index') }}"><h4>Inicio</h4></a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('login') }}"><h4>Iniciar Sesión</h4></a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('regis') }}"><h4>Regístrate</h4></a>
+            </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <h4>Más</h4>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" href="#">Contáctanos</a></li>
+                <li><a class="dropdown-item" href="#">Descubre más</a></li>
+            </ul>
+        </li>
+        </ul>
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Buscar">
+            <button class="btn btn-light" type="submit">Buscar</button>
+        </form>
+    </div>
+    </div>
+</nav>
+</header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-xl-6">
+                <div class="image-container">
+                    <img src="assets/shwemp.jpeg" width="90%" style="border-radius: 50px;">
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-xl-6">
+                <div class="registration-form">
+                    <!-- Formulario de registro -->
+                    <p>Crea tu cuenta y goza de los contenidos de nuestra pagina</p>
+                    <hr class="section-divider">
+                    <form>
+                        <div class="form-group py-3">
+                            <input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre">
+                        </div>
+                        <div class="form-group py-3">
+                            <input type="text" class="form-control" id="apellidos" placeholder=" apellidos">
+                        </div>
+                        <div class="form-group py-3">
+                            <input type="email" class="form-control" id="correo" placeholder="correo">
+                        </div>
+                        <div class="form-group py-3">
+                            <input type="password" class="form-control" id="contrasena" placeholder=" contraseña">
+                        </div>
+                        <div class="form-group py-3">
+                            <input type="password" class="form-control" id="confirmacion-contrasena" placeholder="Confirme contraseña">
+                        </div>
+                        <button type="submit" class="btn btn-block">Crear cuenta</button>
+                    </form>
+                    <p>Todo lo mejor solo para las cuentas registradas!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+<hr class="section-divider">
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xl-12" id="socials">
+                <a href="#"><img src="assets/f.jpg" alt=""></a>
+                <a href="#"><img src="assets/t.jpg" alt=""></a>
+                <a href="#"><img src="assets/in.jpg" alt=""></a>
+                <a href="#"><img src="assets/ins.jpg" alt=""></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
