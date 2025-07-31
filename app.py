@@ -22,9 +22,9 @@ def add_no_cache_headers(response):
     return response
 
 @app.route('/')
-def index():
+def home():
     if 'username' in session:
-        return redirect(url_for('home'))  # Redirige a home si está autenticado
+        return redirect(url_for('index'))  # Redirige a home si está autenticado
     return redirect(url_for('login'))  # Redirige a login si no está autenticado
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -33,14 +33,17 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
+        
         cur = mysql.connection.cursor()
         cur.execute('SELECT * FROM users WHERE username = %s', (username,))
         user = cur.fetchone()
         cur.close()
+        
+        print(f"Valor recuperado de user[2]: {user[2]}")
 
         if user and bcrypt.check_password_hash(user[2], password):
             session['username'] = username
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))
         else:
             flash('Usuario o contraseña incorrectos')
             return redirect(url_for('login'))
@@ -48,8 +51,8 @@ def login():
     response = make_response(render_template('login.html'))
     return add_no_cache_headers(response)  # Aplica las cabeceras de no caché
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/regis', methods=['GET', 'POST'])
+def regis():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -63,14 +66,14 @@ def register():
         flash('Registro exitoso. Por favor, inicia sesión.')
         return redirect(url_for('login'))
 
-    response = make_response(render_template('register.html'))
+    response = make_response(render_template('regis.html'))
     return add_no_cache_headers(response)  # Aplica las cabeceras de no caché
 
-@app.route('/home')
-def home():
+@app.route('/index')
+def index():
     if 'username' not in session:
         return redirect(url_for('login'))  # Redirige a login si no está autenticado
-    response = make_response(render_template('home.html'))
+    response = make_response(render_template('index.html'))
     return add_no_cache_headers(response)  # Aplica las cabeceras de no caché
 
 @app.route('/logout')

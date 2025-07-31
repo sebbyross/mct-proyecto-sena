@@ -24,9 +24,6 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('login') }}"><h4>Iniciar Sesión</h4></a>
-            </li>
-            <li class="nav-item">
             <a class="nav-link" href="{{ url_for('regis') }}"><h4>Regístrate</h4></a>
             </li>
             <li class="nav-item dropdown">
@@ -35,6 +32,7 @@
                 <h4>Más</h4>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Cerrar sesión</a></li>
                 <li><a class="dropdown-item" href="#">Contáctanos</a></li>
                 <li><a class="dropdown-item" href="#">Descubre más</a></li>
             </ul>
@@ -56,7 +54,7 @@
             <img src="../static/assets/shwemp.jpeg" class="image" id="logo1">
         </div>
         <div class="col-sm-12 col-md-12 col-xl-6" id="parag1">
-            <h2>Bienvenido a los inventarios!!, aquí administras el stock del negocio, <a href="regis.html">regístrate</a> o <a href="login.html">inicia sesión para comenzar</a></h2>
+            <h2>Bienvenido a los inventarios!!, aquí administrarias el stock del negocio, por el momento esto es todo lo que tenemos.:3</h2>
         </div>
     </div>
 </div>

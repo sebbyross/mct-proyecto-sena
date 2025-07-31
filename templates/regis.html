@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/estiloslaeconomia.css">
+    <link rel="stylesheet" href="../static/assets/estiloslaeconomia.css">
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-danger">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.html"><img src="assets/shwemp.jpeg" width="50" height="50" style="border-radius: 100px;"></a>
+        <a class="navbar-brand" href="#"><img src="../static/assets/shwemp.jpeg" width="50" height="50" style="border-radius: 100px;"></a>
         
         <!-- Botón de colapso -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
@@ -55,7 +55,7 @@
         <div class="row">
             <div class="col-sm-12 col-md-12 col-xl-6">
                 <div class="image-container">
-                    <img src="assets/shwemp.jpeg" width="90%" style="border-radius: 50px;">
+                    <img src="../static/assets/shwemp.jpeg" width="90%" style="border-radius: 50px;">
                 </div>
             </div>
             <div class="col-sm-12 col-md-12 col-xl-6">
@@ -63,21 +63,12 @@
                     <!-- Formulario de registro -->
                     <p>Crea tu cuenta y goza de los contenidos de nuestra pagina</p>
                     <hr class="section-divider">
-                    <form>
+                    <form method="POST">
                         <div class="form-group py-3">
-                            <input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre">
+                            <input type="text" class="form-control" id="correo" name="username" placeholder="correo">
                         </div>
                         <div class="form-group py-3">
-                            <input type="text" class="form-control" id="apellidos" placeholder=" apellidos">
-                        </div>
-                        <div class="form-group py-3">
-                            <input type="email" class="form-control" id="correo" placeholder="correo">
-                        </div>
-                        <div class="form-group py-3">
-                            <input type="password" class="form-control" id="contrasena" placeholder=" contraseña">
-                        </div>
-                        <div class="form-group py-3">
-                            <input type="password" class="form-control" id="confirmacion-contrasena" placeholder="Confirme contraseña">
+                            <input type="password" class="form-control" id="password" name="password" placeholder=" contraseña">
                         </div>
                         <button type="submit" class="btn btn-block">Crear cuenta</button>
                     </form>
@@ -91,10 +82,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xl-12" id="socials">
-                <a href="#"><img src="assets/f.jpg" alt=""></a>
-                <a href="#"><img src="assets/t.jpg" alt=""></a>
-                <a href="#"><img src="assets/in.jpg" alt=""></a>
-                <a href="#"><img src="assets/ins.jpg" alt=""></a>
+                <a href="#"><img src="../static/assets/f.jpg" alt=""></a>
+                <a href="#"><img src="../static/assets/t.jpg" alt=""></a>
+                <a href="#"><img src="../static/assets/in.jpg" alt=""></a>
+                <a href="#"><img src="../static/assets/ins.jpg" alt=""></a>
             </div>
         </div>
     </div>
