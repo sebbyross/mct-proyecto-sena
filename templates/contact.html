@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contáctanos - MCT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/assets/estiloslaeconomia.css">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-danger">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html"><img src="../static/assets/shwemp.jpeg" width="50" height="50" style="border-radius: 100px;"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}"><h4>Inicio</h4></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}"><h4>Iniciar Sesión</h4></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('regis') }}"><h4>Regístrate</h4></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"><h4>Más</h4></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+                            <li><a class="dropdown-item disabled" href="{{ url_for('contact') }}">Contáctanos</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('more') }}">Descubre más</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Buscar...">
+                    <button class="btn btn-light" type="submit">Buscar</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="container">
+    <h1>Contáctanos</h1>
+    <p class="parag2">¿Tienes preguntas o deseas comunicarte con nosotros? Llena el siguiente formulario y te responderemos pronto.</p>
+    <form>
+        <div class="form-group py-2">
+            <input type="text" class="form-control" placeholder="Tu nombre">
+        </div>
+        <div class="form-group py-2">
+            <input type="email" class="form-control" placeholder="Tu correo electrónico">
+        </div>
+        <div class="form-group py-2">
+            <textarea class="form-control" rows="4" placeholder="Tu mensaje"></textarea>
+        </div>
+        <button type="submit" class="btn btn-danger">Enviar mensaje</button>
+    </form>
+    <p> Esto tambien esta en desarrollo, aun no puedes mandarnos un correo ;)</p>
+</div>
+
+<hr class="section-divider">
+<footer class="bg-dark text-white mt-5 pt-4 pb-3">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <h5>Síguenos en redes sociales</h5>
+            </div>
+            <div class="col-12">
+                <!-- Íconos sociales -->
+                <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i> Facebook</a>
+                <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i> Twitter</a>
+                <a href="#" class="text-white me-3"><i class="bi bi-instagram"></i> Instagram</a>
+                <a href="#" class="text-white"><i class="bi bi-linkedin"></i> LinkedIn</a>
+            </div>
+        </div>
+        <hr class="section-divider my-4">
+        <p class="mb-0">© 2025 MCT S.A.S. Todos los derechos reservados.</p>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

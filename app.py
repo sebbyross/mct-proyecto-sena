@@ -16,16 +16,16 @@ bcrypt = Bcrypt(app)
 
 # Función para agregar cabeceras de no caché
 def add_no_cache_headers(response):
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"  # Deshabilita la caché
-    response.headers["Pragma"] = "no-cache"  # Compatibilidad con HTTP/1.0
-    response.headers["Expires"] = "0"  # Fecha de expiración en el pasado
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache" 
+    response.headers["Expires"] = "0"
     return response
 
 @app.route('/')
 def home():
     if 'username' in session:
-        return redirect(url_for('index'))  # Redirige a home si está autenticado
-    return redirect(url_for('login'))  # Redirige a login si no está autenticado
+        return redirect(url_for('index')) 
+    return redirect(url_for('login')) 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -75,6 +75,20 @@ def index():
         return redirect(url_for('login'))  # Redirige a login si no está autenticado
     response = make_response(render_template('index.html'))
     return add_no_cache_headers(response)  # Aplica las cabeceras de no caché
+
+@app.route('/contact')
+def contact():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    response = make_response(render_template('contact.html'))
+    return add_no_cache_headers(response)
+
+@app.route('/more')
+def more():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    response = make_response(render_template('more.html'))
+    return add_no_cache_headers(response)
 
 @app.route('/logout')
 def logout():
