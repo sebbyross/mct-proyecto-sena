@@ -14,7 +14,6 @@ app.config['MYSQL_DB'] = 'flask_login'
 mysql = MySQL(app)
 bcrypt = Bcrypt(app)
 
-# Función para agregar cabeceras de no caché
 def add_no_cache_headers(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Pragma"] = "no-cache" 
@@ -49,7 +48,7 @@ def login():
             return redirect(url_for('login'))
 
     response = make_response(render_template('login.html'))
-    return add_no_cache_headers(response)  # Aplica las cabeceras de no caché
+    return add_no_cache_headers(response)
 
 @app.route('/regis', methods=['GET', 'POST'])
 def regis():
@@ -67,14 +66,14 @@ def regis():
         return redirect(url_for('login'))
 
     response = make_response(render_template('regis.html'))
-    return add_no_cache_headers(response)  # Aplica las cabeceras de no caché
+    return add_no_cache_headers(response)
 
 @app.route('/index')
 def index():
     if 'username' not in session:
-        return redirect(url_for('login'))  # Redirige a login si no está autenticado
+        return redirect(url_for('login')) 
     response = make_response(render_template('index.html'))
-    return add_no_cache_headers(response)  # Aplica las cabeceras de no caché
+    return add_no_cache_headers(response) 
 
 @app.route('/contact')
 def contact():
@@ -94,7 +93,7 @@ def more():
 def logout():
     session.pop('username', None)
     response = make_response(redirect(url_for('login')))
-    return add_no_cache_headers(response)  # Aplica las cabeceras de no caché
+    return add_no_cache_headers(response)
 
 if __name__ == '__main__':
     app.run(debug=True)
