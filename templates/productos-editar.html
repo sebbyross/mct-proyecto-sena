@@ -1,0 +1,27 @@
+{% extends "admin.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Editar Producto</h2>
+    <form action="{{ url_for('editar_producto', id=producto.id) }}" method="POST">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" name="nombre" class="form-control" value="{{ producto.nombre }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea name="descripcion" class="form-control" rows="3">{{ producto.descripcion }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="precio" class="form-label">Precio</label>
+            <input type="number" name="precio" class="form-control" step="0.01" value="{{ producto.precio }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="stock" class="form-label">Stock</label>
+            <input type="number" name="stock" class="form-control" min="0" value="{{ producto.stock }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+        <a href="{{ url_for('listar_productos') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
