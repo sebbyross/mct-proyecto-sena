@@ -1,9 +1,7 @@
-{% extends "admin.html" %}
+{% extends "index.html" %}
 {% block content %}
 
-<h2>Gestión de Productos</h2>
-
-<a href="{{ url_for('agregar_producto') }}" class="btn btn-success mb-3">Agregar Producto</a>
+<h2>Lista de Productos</h2>
 
 <table class="table table-bordered">
     <thead>
@@ -12,8 +10,6 @@
             <th>Nombre</th>
             <th>Descripcion</th>
             <th>Precio</th>
-            <th>Stock</th>
-            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -24,10 +20,6 @@
             <td>{{ producto[2] }}</td>
             <td>{{ producto[3] }}</td>
             <td>{{ producto[4] }}</td>
-            <td>
-                <a href="{{ url_for('editar_producto', id=producto[0]) }}" class="btn btn-warning btn-sm">Editar</a>
-                <a href="{{ url_for('eliminar_producto', id=producto[0]) }}" class="btn btn-danger btn-sm">Eliminar</a>
-            </td>
         </tr>
         {% endfor %}
     </tbody>

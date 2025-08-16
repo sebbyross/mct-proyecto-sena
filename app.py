@@ -87,6 +87,16 @@ def index():
     response = make_response(render_template('index.html'))
     return add_no_cache_headers(response)
 
+@app.route('/productos_user')
+def productos_user():
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM productos")
+    productos = cur.fetchall()
+    cur.close()
+
+    return render_template('productos-user.html', productos=productos)
+
 # FUNCIONES DE ADMINISTRADOR ------------------------------------------------------
 
 @app.route('/admin')

@@ -48,21 +48,18 @@
 </nav>
 </header>
 
-    <!-- CUERPO -->
-<div class="container">
-    <div class="container mt-4">
+<!-- CUERPO -->
+<div class="container mt-4">
     {% block content %}
     {% endblock %}
-    </div>
+</div>
+<div class="container">
     <div class="row">
         <div class="col-sm-12 col-md-12 col-xl-6">
             <img src="{{ url_for('static', filename='assets/shwemp.jpeg') }}" class="image" id="logo1">
         </div>
         <div class="col-sm-12 col-md-12 col-xl-6" id="parag1">
             <h2>Bienvenido a los inventarios, <span class="text-primary">{{ session['username'] }}</span>!!, eres un administrador. aquí administraras el stock del negocio!</h2>
-            <p class="parag2">Por mientras, explora las paginas que tenemos en la barra de navegacion!
-            estamos trabajando aun en la funcionalidad y el crud... ve a descubre mas para ver mas sobre eso!
-            </p>
             <a href="{{ url_for('productos') }}" class="btn btn-primary mt-3">
               Gestionar Productos
             </a>

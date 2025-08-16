@@ -50,15 +50,19 @@
 
     <!-- CUERPO -->
 <div class="container">
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </div>
     <div class="row">
         <div class="col-sm-12 col-md-12 col-xl-6">
             <img src="../static/assets/shwemp.jpeg" class="image" id="logo1">
         </div>
         <div class="col-sm-12 col-md-12 col-xl-6" id="parag1">
-            <h2>Bienvenido a los inventarios, <span class="text-primary">{{ session['username'] }}</span>!!, aquí administrarias el stock del negocio!</h2>
-            <p class="parag2">Por mientras, explora las paginas que tenemos en la barra de navegacion!
-            estamos trabajando aun en la funcionalidad y el crud... ve a descubre mas para ver mas sobre eso!
-            </p>
+            <h2>Bienvenido a los inventarios, <span class="text-primary">{{ session['username'] }}</span>!!, aquí, como usuario normal, puedes ver el stock del negocio!</h2>
+            <a href="{{ url_for('productos_user') }}" class="btn btn-primary mt-3">
+          Ver Productos
+        </a>
         </div>
     </div>
 </div>
