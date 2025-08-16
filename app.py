@@ -82,6 +82,14 @@ def regis():
 
 @app.route('/index')
 def index():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT adminstatus FROM users WHERE username = %s", (session['username'],))
+    adminstatus_result = cur.fetchone()
+    cur.close()
+
+    if adminstatus_result and adminstatus_result[0] == 1:
+        return redirect(url_for('admin'))
+
     if 'username' not in session:
         return redirect(url_for('login')) 
     response = make_response(render_template('index.html'))
