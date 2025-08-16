@@ -112,12 +112,17 @@ def agregar_producto():
     if request.method == 'POST':
         nombre = request.form['nombre']
         descripcion = request.form['descripcion']
-        precio = request.form['precio']
-        stock = request.form['stock']
+        precio = float(request.form['precio'])
+        stock = int(request.form['stock'])
+
+        print(type(precio), precio)
+        print(type(stock), stock)
 
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO productos (nombre, descripcion, precio, stock) VALUES (%s, %s, %s, %s)",
-                    (nombre, descripcion, precio, stock))
+        cur.execute(
+            "INSERT INTO productos (nombre, descripcion, precio, stock) VALUES (%s, %s, %s, %s)",
+            (nombre, descripcion, precio, stock)
+        )
         mysql.connection.commit()
         cur.close()
 

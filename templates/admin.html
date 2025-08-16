@@ -7,14 +7,14 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../static/assets/estiloslaeconomia.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/estiloslaeconomia.css') }}">
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-danger">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src="../static/assets/shwemp.jpeg" width="50" height="50" style="border-radius: 100px;"></a>
-        
+        <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename='assets/shwemp.jpeg') }}" width="50" height="50" style="border-radius: 100px;"></a>
+
         <!-- Botón de colapso -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,9 +50,13 @@
 
     <!-- CUERPO -->
 <div class="container">
+    <div class="container mt-4">
+    {% block content %}
+    {% endblock %}
+    </div>
     <div class="row">
         <div class="col-sm-12 col-md-12 col-xl-6">
-            <img src="../static/assets/shwemp.jpeg" class="image" id="logo1">
+            <img src="{{ url_for('static', filename='assets/shwemp.jpeg') }}" class="image" id="logo1">
         </div>
         <div class="col-sm-12 col-md-12 col-xl-6" id="parag1">
             <h2>Bienvenido a los inventarios, <span class="text-primary">{{ session['username'] }}</span>!!, eres un administrador. aquí administraras el stock del negocio!</h2>
@@ -65,7 +69,6 @@
         </div>
     </div>
 </div>
-
 <hr class="section-divider">
 
 <div class="container" id="space">
@@ -79,7 +82,7 @@
             <p class="parag2">En MCT S.A.S, MARKETING E INVERSIONES S.A.S. y FERRICAR S.A.S. nos enfocamos en ser líderes en logística, ofreciendo soluciones integradas de transporte, almacenamiento y distribución. A través de nuestro servicio 3PL, optimizamos los procesos de nuestros clientes, mejorando su competitividad. Cada empresa aporta su especialidad: MCT S.A.S. en transporte masivo y almacenamiento, FERRICAR S.A.S. en distribución nacional y MARKETING E INVERSIONES S.A.S. en infraestructura de almacenamiento de alta capacidad. Garantizando soluciones logísticas sostenibles, tecnológicas y personalizadas, comprometiéndonos a generar valor a largo plazo, siendo un socio estratégico para el éxito de nuestros clientes, contribuyendo al desarrollo económico y sostenible del país.</p>
         </div>
         <div class="col-sm-12 col-md-12 col-xl-6">
-            <img src="../static/assets/mct-truck.jpg" alt="demostración" id="truck1">
+            <img src="{{ url_for('static', filename='assets/mct-truck.jpg') }}" alt="demostración" id="truck1">
         </div>
     </div>
 </div>
@@ -87,7 +90,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12 col-md-12 col-xl-6">
-            <img src="../static/assets/vision.png" alt="demostración" id="truck1">
+            <img src="{{ url_for('static', filename='assets/vision.png') }}" alt="demostración" id="truck1">
         </div>
         <div class="col-sm-12 col-md-12 col-xl-6">
             <h1>Visión</h1>

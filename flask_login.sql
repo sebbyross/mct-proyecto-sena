@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-08-2025 a las 17:26:54
+-- Tiempo de generación: 17-08-2025 a las 00:25:07
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -21,6 +21,19 @@ SET time_zone = "+00:00";
 -- Base de datos: `flask_login`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `productos`
+--
+
+CREATE TABLE `productos` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `precio` decimal(10,2) NOT NULL,
+  `stock` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -40,17 +53,16 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `adminstatus`) VALUES
-(1, 'Sebas Rodriguez', '$2b$12$x3l1SjFu20tJJcU6IQZHnOZaqLDmv/4A12r1KPAcSIvJ9c58bLZfS', 1),
-(2, 'pablo', '$2b$12$yQpJLYjvzkQvxsMsj2XcTuz6y7Egq1yb3fjInUDjBErzFGI1/YtHa', 0);
+(1, 'Sebas', '$2b$12$wwOZoFTmjxC6VTpU6ccn9.0AEOWvbzvykLhfa7blisiO5/evRCgm.', 1);
 
 --
 -- Índices para tablas volcadas
 --
 
 --
--- Indices de la tabla `carros`
+-- Indices de la tabla `productos`
 --
-ALTER TABLE `carros`
+ALTER TABLE `productos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -64,16 +76,16 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT de la tabla `carros`
+-- AUTO_INCREMENT de la tabla `productos`
 --
-ALTER TABLE `carros`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `productos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
