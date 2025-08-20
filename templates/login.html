@@ -45,7 +45,6 @@
         </div>
     </nav>
 </header>
-
 	<div class="login-container">
         <form method ="POST">
             <div class="form-group">
@@ -61,8 +60,16 @@
                 <button type="submit">iniciar sesion</button>
             </div>
         </form>
-        <a href="{{ url_for('regis') }}">¿No tienes una cuenta? Regístrate</a>    
+        <a href="{{ url_for('regis') }}">¿No tienes una cuenta? Regístrate</a> 
     </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% set category, message = messages[-1] %}
+                    <div class="alert alert-{{ category }}" style="background-color: crimson; width: fit-content;">{{ message }}</div>
+                </ul>
+            {% endif %}
+        {% endwith %}
     <hr class="section-divider">
     <!--Informacion sobre la gestion de los inventarios al registrarse-->
     <div class="container">

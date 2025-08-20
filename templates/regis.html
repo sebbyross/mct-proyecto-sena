@@ -24,9 +24,6 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('index') }}"><h4>Inicio</h4></a>
-            </li>
-            <li class="nav-item">
             <a class="nav-link" href="{{ url_for('login') }}"><h4>Iniciar Sesión</h4></a>
             </li>
             <li class="nav-item">
@@ -71,6 +68,14 @@
                         <div class="form-group py-3">
                             <input type="password" class="form-control" id="password" name="password" placeholder=" contraseña">
                         </div>
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                <ul class="flashes">
+                                    {% set category, message = messages[-1] %}
+                                        <div class="alert alert-{{ category }}" style="background-color: crimson; width: fit-content;">{{ message }}</div>
+                                </ul>
+                            {% endif %}
+                        {% endwith %}
                         <button type="submit" class="btn btn-block">Crear cuenta</button>
                     </form>
                     <p>Todo lo mejor solo para las cuentas registradas!</p>

@@ -69,6 +69,17 @@ def regis():
         password = request.form['password']
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
+        # Check si el usuario existe
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
+        existing_user = cur.fetchone()
+        cur.close()
+
+        if existing_user:
+            # Usuario ya existe
+            flash('El nombre de usuario ya existe. Por favor, elige otro.')
+            return redirect(url_for('regis'))
+
         cur = mysql.connection.cursor()
         cur.execute('INSERT INTO users (username, password) VALUES (%s, %s)', (username, hashed_password))
         mysql.connection.commit()
