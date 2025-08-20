@@ -24,6 +24,7 @@
         <!-- Contenido colapsable -->
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            {{ session['username'] }}
             <li class="nav-item">
             <a class="nav-link" href="{{ url_for('regis') }}"><h4>Regístrate</h4></a>
             </li>

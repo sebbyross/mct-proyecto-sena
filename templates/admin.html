@@ -24,6 +24,7 @@
         <!-- Contenido colapsable -->
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            {{ session['username'] }}
             <li class="nav-item">
             <a class="nav-link" href="{{ url_for('regis') }}"><h4>Regístrate</h4></a>
             </li>
@@ -34,8 +35,7 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <li><a class="dropdown-item" href="{{ url_for('logout') }}">Cerrar sesión</a></li>
-                <li><a class="dropdown-item" href="{{ url_for('contact') }}">Contáctanos</a></li>
-                <li><a class="dropdown-item" href="{{ url_for('more') }}">Descubre más</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('user_list') }}">Usuarios</a></li>
             </ul>
         </li>
         </ul>

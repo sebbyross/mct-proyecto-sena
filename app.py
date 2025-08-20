@@ -9,8 +9,8 @@ app.secret_key = 'tu_clave_secreta'
 
 # SQL CONFIG---------------------------------------------------------
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_USER'] = 'sebas_r'
+app.config['MYSQL_PASSWORD'] = 'lemonsharkswim'
 app.config['MYSQL_DB'] = 'flask_login'
 
 mysql = MySQL(app)
@@ -114,6 +114,15 @@ def admin():
     response = make_response(render_template('admin.html'))
     return add_no_cache_headers(response)
 
+@app.route('/users')
+def user_list():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM users")
+    users = cur.fetchall()
+    cur.close()
+
+    return render_template('users.html', users=users)
+
 @app.route('/productos')
 def productos():
     
@@ -204,6 +213,44 @@ def logout():
     session.pop('username', None)
     response = make_response(redirect(url_for('login')))
     return add_no_cache_headers(response)
+
+@app.route('/users/editar/<int:id>', methods=['GET', 'POST'])
+def editar_usuario(id):
+    cur = mysql.connection.cursor()
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        adminstatus = request.form['adminstatus']
+
+        if password:
+            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+            cur.execute("""
+                UPDATE users SET username=%s, password=%s, adminstatus=%s WHERE id=%s
+            """, (username, hashed_password, adminstatus, id))
+        else:
+            cur.execute("""
+                UPDATE users SET username=%s, adminstatus=%s WHERE id=%s
+            """, (username, adminstatus, id))
+
+        mysql.connection.commit()
+        cur.close()
+        return redirect(url_for('user_list'))
+
+    cur.execute("SELECT * FROM users WHERE id=%s", (id,))
+    user = cur.fetchone()
+    cur.close()
+
+    return render_template('users-editar.html', user=user)
+
+
+@app.route('/users/eliminar/<int:id>')
+def eliminar_usuario(id):
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM users WHERE id=%s", (id,))
+    mysql.connection.commit()
+    cur.close()
+
+    return redirect(url_for('user_list'))
 
 if __name__ == '__main__':
     app.run(debug=True)
