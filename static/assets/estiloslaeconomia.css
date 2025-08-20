@@ -1,7 +1,7 @@
 body {
     font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color: #333333;
-    background-color: #f4f4f9; /* Light Grayish White */
+    background-color: #ffffff; 
     margin: 30px;
     padding: 10px;
 }
@@ -118,12 +118,12 @@ h1 {
 .navbar{
     margin-left: 10px;
     margin-right: 10px;
-    background-color: #34b0e9;
+    background-color: #889499;
     border-radius: 8px;
 }
 
 a{
-    color: #28302e;
+    color: #28302a;
     text-decoration: none;
 }
 a:hover{
