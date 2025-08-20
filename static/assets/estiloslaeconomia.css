@@ -92,7 +92,7 @@ h1 {
     width: auto;
     padding: 10px;
     float: left;
-    background-color: rgb(224, 66, 66);
+    background-color: rgb(66, 129, 224);
     color: #fff;
     border: none;
     border-radius: 3px;
@@ -104,7 +104,7 @@ h1 {
 }
 
 .btn {
-    background-color:#e93434;
+    background-color:#00a2ff;
     margin-left: 20px;
     margin-right: 20px;
 }
@@ -118,7 +118,7 @@ h1 {
 .navbar{
     margin-left: 10px;
     margin-right: 10px;
-    background-color: #e93434;
+    background-color: #34b0e9;
     border-radius: 8px;
 }
 
