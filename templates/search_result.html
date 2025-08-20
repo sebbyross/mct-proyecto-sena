@@ -1,0 +1,26 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<h2>Resultado de la busqueda</h2>
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Usuario</th>
+        <th>Contraseña</th>
+        <th>Admin</th>
+        <th>Acciones</th>
+    </tr>
+    <tr>
+        <td>{{ user[0] }}</td>
+        <td>{{ user[1] }}</td>
+        <td>encriptada</td>
+        <td>{{ user[3] }}</td>
+        <td>
+            <a href="{{ url_for('editar_usuario', id=user[0]) }}" class="btn btn-warning btn-sm">Editar</a>
+            <a href="{{ url_for('eliminar_usuario', id=user[0]) }}" class="btn btn-danger btn-sm">Eliminar</a>
+        </td>
+    </tr>
+</table>
+
+{% endblock %}

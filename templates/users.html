@@ -1,7 +1,13 @@
 {% extends "admin.html" %}
 {% block content %}
 
-<h2>Gestión de Usuarios</h2>
+<h1>Gestión de Usuarios</h1>
+
+<a class="btn btn-danger btn-lg" href="{{ url_for('search_by_id') }}">Buscar usuario</a>
+
+{% if users %}
+    <h2>Total de usuarios: {{ users|length }}</h2>
+{% endif %}
 
 <table class="table table-bordered">
     <thead>
@@ -22,7 +28,7 @@
             <td>{{ user[3] }}</td>
             <td>
                 <a href="{{ url_for('editar_usuario', id=user[0]) }}" class="btn btn-warning btn-sm">Editar</a>
-                <a href="{{ url_for('eliminar_usuario', id=user[0]) }}" class="btn btn-danger btn-sm">Eliminar</a>
+                <a href="{{ url_for('eliminar_usuario', id=user[0]) }}"  onclick="return confirm('Quieres borrar este usuario?');" class="btn btn-danger btn-sm">Eliminar</a>
             </td>
         </tr>
         {% endfor %}

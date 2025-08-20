@@ -24,7 +24,9 @@
         <!-- Contenido colapsable -->
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            {{ session['username'] }}
+            <li class="nav-item">
+            <a class="nav-link" href="#"><h4>{{ session['username'] }}, ID: <span style="color: rgb(83, 8, 8);">{{ session['id'] }}</span></h4></a>
+            </li>
             <li class="nav-item">
             <a class="nav-link" href="{{ url_for('regis') }}"><h4>Regístrate</h4></a>
             </li>
@@ -60,10 +62,10 @@
             <img src="../static/assets/shwemp.jpeg" class="image" id="logo1">
         </div>
         <div class="col-sm-12 col-md-12 col-xl-6" id="parag1">
-            <h2>Bienvenido a los inventarios, <span class="text-primary">{{ session['username'] }}</span>!!, aquí, como usuario normal, puedes ver el stock del negocio!</h2>
+            <h2>Bienvenid@ a los inventarios, <span class="text-primary">{{ session['username'] }}</span>!!, aquí, como usuario normal, puedes ver el stock del negocio!</h2>
             <a href="{{ url_for('productos_user') }}" class="btn btn-primary mt-3">
-          Ver Productos
-        </a>
+                Ver Productos
+            </a>
         </div>
     </div>
 </div>

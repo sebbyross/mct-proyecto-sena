@@ -1,16 +1,7 @@
 {% extends "admin.html" %}
 {% block content %}
 
-<h1>Gestión de Productos</h1>
-
-<a href="{{ url_for('agregar_producto') }}" class="btn btn-success btn-lg mb-3">Agregar Producto</a> <br>
-<a class="btn btn-danger" href="{{ url_for('search_p_by_id') }}">Buscar producto</a>
-
-{% if productos %}
-    <h2>Total de productos: {{ productos|length }}</h2>
-{% else %}
-    <h2>No hay productos registrados.</h2>
-{% endif %}
+<h2>Busqueda de Productos</h2>
 
 <table class="table table-bordered">
     <thead>
@@ -24,7 +15,6 @@
         </tr>
     </thead>
     <tbody>
-        {% for producto in productos %}
         <tr>
             <td>{{ producto[0] }}</td>
             <td>{{ producto[1] }}</td>
@@ -33,10 +23,9 @@
             <td>{{ producto[4] }}</td>
             <td>
                 <a href="{{ url_for('editar_producto', id=producto[0]) }}" class="btn btn-warning btn-sm">Editar</a>
-                <a href="{{ url_for('eliminar_producto', id=producto[0]) }}" onclick="return confirm('Quieres borrar este producto?');" class="btn btn-danger btn-sm">Eliminar</a>
+                <a href="{{ url_for('eliminar_producto', id=producto[0]) }}" class="btn btn-danger btn-sm">Eliminar</a>
             </td>
         </tr>
-        {% endfor %}
     </tbody>
 </table>
 

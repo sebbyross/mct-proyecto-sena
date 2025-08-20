@@ -41,11 +41,13 @@ def login():
         cur = mysql.connection.cursor()
         cur.execute('SELECT * FROM users WHERE username = %s', (username,))
         user = cur.fetchone()
+        id = user[0] if user else None  # Obtener el ID del usuario si existe
         cur.close()
         
 
         if user and bcrypt.check_password_hash(user[2], password):
             session['username'] = username
+            session['id'] = id  # Guardar el ID del usuario en la sesión
             cur = mysql.connection.cursor()
             cur.execute("SELECT adminstatus FROM users WHERE username = %s", (username,))
             adminstatus_result = cur.fetchone()
@@ -133,6 +135,48 @@ def user_list():
     cur.close()
 
     return render_template('users.html', users=users)
+
+@app.route('/search', methods=['GET', 'POST'])
+def search_by_id():
+    if request.method == 'POST':
+        user_id = request.form['id']  # Get the ID from the form input
+
+        # Query the database for the record with the given ID
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+        user = cur.fetchone()
+        cur.close()
+
+        if user:
+            # If a user is found, display the result
+            return render_template('search_result.html', user=user)
+        else:
+            # If no user is found, flash a message
+            flash("No user found with the given ID.", "warning")
+            return redirect(url_for('search_by_id'))
+
+    return render_template('search-user.html')
+
+@app.route('/search-p', methods=['GET', 'POST'])
+def search_p_by_id():
+    if request.method == 'POST':
+        product_id = request.form['id']  # Get the ID from the form input
+
+        # Query the database for the record with the given ID
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM productos WHERE id = %s", (product_id,))
+        producto = cur.fetchone()
+        cur.close()
+
+        if producto:
+            # If a product is found, display the result
+            return render_template('search_result_p.html', producto=producto)
+        else:
+            # If no user is found, flash a message
+            flash("No se encontro el producto", "warning")
+            return redirect(url_for('search_p_by_id'))
+
+    return render_template('search-p.html')
 
 @app.route('/productos')
 def productos():

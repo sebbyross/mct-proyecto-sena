@@ -1,0 +1,13 @@
+{% extends "admin.html" %}
+
+{% block content %}
+
+<form method="POST">
+    <div class="form-group">
+        <label for="id">Id del articulo</label>
+        <input type="number" class="form-control" id="id" name="id" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
+
+{% endblock %}
