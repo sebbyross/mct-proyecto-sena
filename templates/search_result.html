@@ -18,7 +18,7 @@
         <td>{{ user[3] }}</td>
         <td>
             <a href="{{ url_for('editar_usuario', id=user[0]) }}" class="btn btn-warning btn-sm">Editar</a>
-            <a href="{{ url_for('eliminar_usuario', id=user[0]) }}" class="btn btn-danger btn-sm">Eliminar</a>
+            <a href="{{ url_for('eliminar_usuario', id=user[0]) }}" onclick="return confirm('Quieres borrar este usuario?');" class="btn btn-danger btn-sm">Eliminar</a>
         </td>
     </tr>
 </table>

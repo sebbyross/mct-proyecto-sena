@@ -8,6 +8,7 @@
 
 {% if productos %}
     <h2>Total de productos: {{ productos|length }}</h2>
+    <a href="#start" class="btn btn-sm"> Ir a la ultima id</a>
 {% else %}
     <h2>No hay productos registrados.</h2>
 {% endif %}
@@ -39,5 +40,6 @@
         {% endfor %}
     </tbody>
 </table>
-
+<hr class="section-divider" id="start">
+<p>ultima id arriba</p>
 {% endblock %}
