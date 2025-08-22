@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, make_response, jsonify
-from flask_mysqldb import MySQL
+import pymysql
 from flask_bcrypt import Bcrypt
 import os
 from werkzeug.utils import secure_filename 
@@ -11,10 +11,14 @@ app.secret_key = 'tu_clave_secreta'
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'localhost')
 app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')
 app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', '')
-app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'mct_proyecto')
+app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'flask_login')
 
-
-mysql = MySQL(app)
+def get_db_connection():
+    return pymysql.connect(
+        host=app.config['MYSQL_HOST'],
+        user=app.config['MYSQL_USER'],
+        password=app.config['MYSQL_PASSWORD'],
+        database=app.config['MYSQL_DB'],)
 bcrypt = Bcrypt(app)
 # UTIL CUSTOM FUNCTIONS---------------------------------------------------------
 
@@ -38,22 +42,23 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        
-        cur = mysql.connection.cursor()
+        conn = get_db_connection()
+        cur = conn.cursor()
         cur.execute('SELECT * FROM users WHERE username = %s', (username,))
         user = cur.fetchone()
         id = user[0] if user else None  # Obtener el ID del usuario si existe
         cur.close()
-        
 
         if user and bcrypt.check_password_hash(user[2], password):
             session['username'] = username
             session['id'] = id  # Guardar el ID del usuario en la sesión
-            cur = mysql.connection.cursor()
+            conn = get_db_connection()
+            cur = conn.cursor()
             cur.execute("SELECT adminstatus FROM users WHERE username = %s", (username,))
             adminstatus_result = cur.fetchone()
             cur.close()
 
+            
             # Chequear rol
             if adminstatus_result and adminstatus_result[0] == 1:
                 return redirect(url_for('admin'))
@@ -73,20 +78,22 @@ def regis():
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
         # Check si el usuario existe
-        cur = mysql.connection.cursor()
+        conn = get_db_connection()
+        cur = conn.cursor()
         cur.execute("SELECT * FROM users WHERE username = %s", (username,))
         existing_user = cur.fetchone()
-        cur.close()
+        cur.close() 
 
         if existing_user:
             # Usuario ya existe
             flash('El nombre de usuario ya existe. Por favor, elige otro.')
             return redirect(url_for('regis'))
 
-        cur = mysql.connection.cursor()
+        conn = get_db_connection()
+        cur = conn.cursor()
         cur.execute('INSERT INTO users (username, password) VALUES (%s, %s)', (username, hashed_password))
         mysql.connection.commit()
-        cur.close()
+        cur.close() 
 
         flash('Registro exitoso. Por favor, inicia sesión.')
         return redirect(url_for('login'))
@@ -96,11 +103,11 @@ def regis():
 
 @app.route('/index')
 def index():
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    cur = conn.cursor()
     cur.execute("SELECT adminstatus FROM users WHERE username = %s", (session['username'],))
     adminstatus_result = cur.fetchone()
-    cur.close()
-
+    cur.close()   
     if adminstatus_result and adminstatus_result[0] == 1:
         return redirect(url_for('admin'))
 
@@ -112,11 +119,11 @@ def index():
 @app.route('/productos_user')
 def productos_user():
 
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    cur = conn.cursor()
     cur.execute("SELECT * FROM productos")
     productos = cur.fetchall()
     cur.close()
-
     return render_template('productos-user.html', productos=productos)
 
 # FUNCIONES DE ADMINISTRADOR ------------------------------------------------------
@@ -130,7 +137,8 @@ def admin():
 
 @app.route('/users')
 def user_list():
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    cur = conn.cursor()
     cur.execute("SELECT * FROM users")
     users = cur.fetchall()
     cur.close()
@@ -143,7 +151,8 @@ def search_by_id():
         user_id = request.form['id']  # Get the ID from the form input
 
         # Query the database for the record with the given ID
-        cur = mysql.connection.cursor()
+        conn = get_db_connection()
+        cur = conn.cursor()
         cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
         user = cur.fetchone()
         cur.close()
@@ -164,7 +173,8 @@ def search_p_by_id():
         product_id = request.form['id']  # Get the ID from the form input
 
         # Query the database for the record with the given ID
-        cur = mysql.connection.cursor()
+        conn = get_db_connection()
+        cur = conn.cursor()
         cur.execute("SELECT * FROM productos WHERE id = %s", (product_id,))
         producto = cur.fetchone()
         cur.close()
@@ -182,7 +192,8 @@ def search_p_by_id():
 @app.route('/productos')
 def productos():
     
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    cur = conn.cursor()
     cur.execute("SELECT * FROM productos")
     productos = cur.fetchall()
     cur.close()
@@ -201,7 +212,8 @@ def agregar_producto():
         print(type(precio), precio)
         print(type(stock), stock)
 
-        cur = mysql.connection.cursor()
+        conn = get_db_connection()
+        cur = conn.cursor()
         cur.execute(
             "INSERT INTO productos (nombre, descripcion, precio, stock) VALUES (%s, %s, %s, %s)",
             (nombre, descripcion, precio, stock)
@@ -217,7 +229,8 @@ def agregar_producto():
 @app.route('/productos/editar/<int:id>', methods=['GET', 'POST'])
 def editar_producto(id):
 
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    cur = conn.cursor()
     if request.method == 'POST':
         nombre = request.form['nombre']
         descripcion = request.form['descripcion']
@@ -241,7 +254,8 @@ def editar_producto(id):
 @app.route('/productos/eliminar/<int:id>')
 def eliminar_producto(id):
 
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    cur = conn.cursor()
     cur.execute("DELETE FROM productos WHERE id=%s", (id,))
     mysql.connection.commit()
     cur.close()
@@ -272,11 +286,12 @@ def logout():
 
 @app.route('/users/editar/<int:id>', methods=['GET', 'POST'])
 def editar_usuario(id):
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    cur = conn.cursor()
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        adminstatus = request.form['adminstatus']
+        adminstatus  = request.form['adminstatus']
 
         if password:
             hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -301,11 +316,12 @@ def editar_usuario(id):
 
 @app.route('/users/eliminar/<int:id>')
 def eliminar_usuario(id):
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    cur = conn.cursor()
     cur.execute("DELETE FROM users WHERE id=%s", (id,))
     mysql.connection.commit()
     cur.close()
-
+    conn.close() 
     return redirect(url_for('user_list'))
 
 if __name__ == '__main__':
