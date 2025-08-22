@@ -8,9 +8,12 @@
 
 {% if productos %}
     <h2>Total de productos: {{ productos|length }}</h2>
-    <a href="#start" class="btn btn-sm mb-3">Ir a la ultima id</a>
 {% else %}
     <h2>No hay productos registrados.</h2>
+{% endif %}
+
+{% if productos %}
+    <h2>Ultimo ID: {{ productos[-1][0] }}</h2>
 {% endif %}
 
 <table class="table table-bordered mt-3">
@@ -41,5 +44,4 @@
     </tbody>
 </table>
 <hr class="section-divider" id="start">
-<p>ultima id arriba</p>
 {% endblock %}
