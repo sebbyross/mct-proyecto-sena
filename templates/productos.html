@@ -3,17 +3,17 @@
 
 <h1>Gestión de Productos</h1>
 
-<a href="{{ url_for('agregar_producto') }}" class="btn btn-success btn-lg mb-3">Agregar Producto</a> <br>
-<a class="btn btn-danger" href="{{ url_for('search_p_by_id') }}">Buscar producto</a>
+<a href="{{ url_for('agregar_producto') }}" class="btn btn-success btn-lg mb-3 mt-3">Agregar Producto</a> <br>
+<a class="btn btn-danger mb-3" href="{{ url_for('search_p_by_id') }}">Buscar producto</a>
 
 {% if productos %}
     <h2>Total de productos: {{ productos|length }}</h2>
-    <a href="#start" class="btn btn-sm"> Ir a la ultima id</a>
+    <a href="#start" class="btn btn-sm mb-3">Ir a la ultima id</a>
 {% else %}
     <h2>No hay productos registrados.</h2>
 {% endif %}
 
-<table class="table table-bordered">
+<table class="table table-bordered mt-3">
     <thead>
         <tr>
             <th>ID</th>

@@ -1,6 +1,14 @@
 {% extends "admin.html" %}
 
 {% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul class="flashes">
+        {% set category, message = messages[-1] %}
+            <div class="alert alert-{{ category }}" style="background-color: crimson; width: fit-content; color: aliceblue;">{{ message }}</div>
+        </ul>
+    {% endif %}
+{% endwith %}
 
 <form method="POST">
     <div class="form-group">

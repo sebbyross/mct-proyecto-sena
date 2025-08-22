@@ -152,7 +152,7 @@ def search_by_id():
             return render_template('search_result.html', user=user)
         else:
             # If no user is found, flash a message
-            flash("No user found with the given ID.", "warning")
+            flash("No hay usuario con esta id.", "warning")
             return redirect(url_for('search_by_id'))
 
     return render_template('search-user.html')
