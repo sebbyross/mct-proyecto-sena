@@ -1,6 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, make_response, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, make_response, jsonify, send_file
 import pymysql
+from io import BytesIO
+from reportlab.pdfgen import canvas
 from flask_bcrypt import Bcrypt
+from openpyxl import Workbook
 import os
 from werkzeug.utils import secure_filename 
 
@@ -92,7 +95,7 @@ def regis():
         conn = get_db_connection()
         cur = conn.cursor()
         cur.execute('INSERT INTO users (username, password) VALUES (%s, %s)', (username, hashed_password))
-        mysql.connection.commit()
+        conn.commit()
         cur.close() 
 
         flash('Registro exitoso. Por favor, inicia sesión.')
@@ -218,7 +221,7 @@ def agregar_producto():
             "INSERT INTO productos (nombre, descripcion, precio, stock) VALUES (%s, %s, %s, %s)",
             (nombre, descripcion, precio, stock)
         )
-        mysql.connection.commit()
+        conn.commit()
         cur.close()
 
         return redirect(url_for('productos'))
@@ -240,7 +243,7 @@ def editar_producto(id):
         cur.execute("""
             UPDATE productos SET nombre=%s, descripcion=%s, precio=%s, stock=%s WHERE id=%s
         """, (nombre, descripcion, precio, stock, id))
-        mysql.connection.commit()
+        conn.commit()
         cur.close()
         return redirect(url_for('productos'))
 
@@ -257,7 +260,7 @@ def eliminar_producto(id):
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute("DELETE FROM productos WHERE id=%s", (id,))
-    mysql.connection.commit()
+    conn.commit()
     cur.close()
 
     return redirect(url_for('productos'))
@@ -303,7 +306,7 @@ def editar_usuario(id):
                 UPDATE users SET username=%s, adminstatus=%s WHERE id=%s
             """, (username, adminstatus, id))
 
-        mysql.connection.commit()
+        conn.commit()
         cur.close()
         return redirect(url_for('user_list'))
 
@@ -319,10 +322,80 @@ def eliminar_usuario(id):
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute("DELETE FROM users WHERE id=%s", (id,))
-    mysql.connection.commit()
+    conn.commit()
     cur.close()
     conn.close() 
     return redirect(url_for('user_list'))
+
+# REPORTES ------------------------------------------------------
+
+from openpyxl.drawing.image import Image as XLImage
+import tempfile
+import os
+
+@app.route('/report/excel')
+def report_excel():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM productos")
+    data = cur.fetchall()
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Productos"
+    ws.append(["Id", "Nombre", "Descripción", "Precio", "Stock"])
+
+    row_num = 2
+    for id, nombre, descripcion, precio, stock in data:
+        ws.cell(row=row_num, column=1, value=id)
+        ws.cell(row=row_num, column=2, value=nombre)
+        ws.cell(row=row_num, column=3, value=descripcion)
+        ws.cell(row=row_num, column=4, value=precio)
+        ws.cell(row=row_num, column=5, value=stock)
+        row_num += 1
+
+    output = BytesIO()
+    wb.save(output)
+    output.seek(0)
+
+    return send_file(output, download_name="reporte_productos.xlsx", as_attachment=True)
+
+@app.route('/report/pdf')
+def report_pdf():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM productos")
+    data = cur.fetchall()
+
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=(595, 842))  # A4
+    y = 800
+
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(200, y, "Reporte de Productos")
+    y -= 40
+
+    for id, nombre, descripcion, precio, stock in data:
+        if y < 100:
+            p.showPage()
+            y = 800
+
+        p.setFont("Helvetica-Bold", 12)
+        p.drawString(50, y, f"ID: {id}")
+        y -= 15
+        p.drawString(50, y, f"Nombre: {nombre}")
+        y -= 15
+        p.setFont("Helvetica", 10)
+        p.drawString(50, y, f"Descripción: {descripcion}")
+        y -= 15
+        p.drawString(50, y, f"Precio: {precio}")
+        y -= 15
+        p.drawString(50, y, f"Stock: {stock}")
+        y -= 15
+
+    p.save()
+    buffer.seek(0)
+    return send_file(buffer, download_name="reporte_productos.pdf", as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)
