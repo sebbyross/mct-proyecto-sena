@@ -212,9 +212,6 @@ def agregar_producto():
         precio = float(request.form['precio'])
         stock = int(request.form['stock'])
 
-        print(type(precio), precio)
-        print(type(stock), stock)
-
         conn = get_db_connection()
         cur = conn.cursor()
         cur.execute(
