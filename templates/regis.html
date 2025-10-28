@@ -61,22 +61,19 @@
                     <!-- Formulario de registro -->
                     <p>Crea tu cuenta y goza de los contenidos de nuestra pagina</p>
                     <hr class="section-divider">
-                    <form method="POST">
-                        <div class="form-group py-3">
-                            <input type="text" class="form-control" id="user" name="username" placeholder="Usuario(nombre)">
+                    <form method="POST" action="{{ url_for('regis') }}">
+                        <div class="mb-3">
+                            <label class="form-label">Usuario</label>
+                            <input name="username" class="form-control" required>
                         </div>
-                        <div class="form-group py-3">
-                            <input type="password" class="form-control" id="password" name="password" placeholder=" contraseña">
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <input name="password" type="password" class="form-control" required>
                         </div>
-                        {% with messages = get_flashed_messages(with_categories=true) %}
-                            {% if messages %}
-                                <ul class="flashes">
-                                    {% set category, message = messages[-1] %}
-                                        <div class="alert alert-{{ category }}" style="background-color: crimson; width: fit-content; color: aliceblue;">{{ message }}</div>
-                                </ul>
-                            {% endif %}
-                        {% endwith %}
-                        <button type="submit" class="btn btn-block">Crear cuenta</button>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-success" type="submit">Registrar</button>
+                            <a class="btn btn-outline-secondary" href="{{ url_for('login') }}">Volver</a>
+                        </div>
                     </form>
                     <p>Todo lo mejor solo para las cuentas registradas!</p>
                 </div>

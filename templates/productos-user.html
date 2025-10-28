@@ -1,29 +1,26 @@
-{% extends "index.html" %}
+{% extends "admin.html" %}
+{% block title %}Productos - MCT{% endblock %}
 {% block content %}
-
-<h2>Lista de Productos</h2>
-
-<table class="table table-bordered">
-    <thead>
+<h2>Productos</h2>
+{% if productos %}
+<div class="card p-3 mb-3">
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead><tr><th>Nombre</th><th>Descripción</th><th>Precio</th><th>Stock</th></tr></thead>
+      <tbody>
+        {% for p in productos %}
         <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Descripcion</th>
-            <th>Precio</th>
-            <th>Stock</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for producto in productos %}
-        <tr>
-            <td>{{ producto[0] }}</td>
-            <td>{{ producto[1] }}</td>
-            <td>{{ producto[2] }}</td>
-            <td>$ {{ producto[3] }}</td>
-            <td>{{ producto[4] }}</td>
+          <td>{{ p[1] }}</td>
+          <td>{{ p[2] }}</td>
+          <td>{{ p[3] }}</td>
+          <td>{{ p[4] if p|length > 4 else '-' }}</td>
         </tr>
         {% endfor %}
-    </tbody>
-</table>
-
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="card p-3">No hay productos para mostrar.</div>
+{% endif %}
 {% endblock %}
