@@ -1,25 +1,35 @@
 {% extends "admin.html" %}
-
+{% block title %}Editar Usuario - MCT{% endblock %}
 {% block content %}
-
-    <h2>Editar Usuario</h2>
-
-    <form action="{{ url_for('editar_usuario', id=user[0]) }}" method="POST">
-        <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" name="username" class="form-control" value="{{ user[1] }}" required>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Contraseña Nueva</label>
-            <textarea name="password" class="form-control" rows="3"></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="precio" class="form-label">administrador</label> <br>
-            1 = admin, 0 = no admin
-            <input type="number" min="0" max="1" name="adminstatus" class="form-control" value="{{ user[3] }}" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Actualizar</button>
-        <a href="{{ url_for('user_list') }}" class="btn btn-secondary">Cancelar</a>
-    </form>
-
+<div class="card p-4">
+  <h3>Editar usuario</h3>
+  {% if user %}
+  <form method="POST" action="{{ url_for('editar_usuario', id=user[0]) }}">
+    <div class="mb-3">
+      <label class="form-label">Usuario</label>
+      <input name="username" class="form-control" value="{{ user[1] }}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Contraseña (dejar en blanco para no cambiar)</label>
+      <input name="password" type="password" class="form-control">
+    </div>
+    <div class="mb-3 form-check">
+      {# hide checkbox when editing your own user #}
+      {% if session.get('id')|int != user[0]|int %}
+      <input type="checkbox" name="adminstatus" value="1" class="form-check-input" id="adminCheck" {% if user[3]|int == 1 %}checked{% endif %}>
+      <label class="form-check-label" for="adminCheck">Administrador</label>
+      {% else %}
+      <input type="hidden" name="adminstatus" value="{{ '1' if user[3]|int == 1 else '0' }}">
+      <div class="form-text">No puedes cambiar tu rol desde aquí.</div>
+      {% endif %}
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" type="submit">Guardar</button>
+      <a class="btn btn-outline-secondary" href="{{ url_for('user_list') }}">Cancelar</a>
+    </div>
+  </form>
+  {% else %}
+  <div class="alert alert-warning">Usuario no encontrado.</div>
+  {% endif %}
+</div>
 {% endblock %}

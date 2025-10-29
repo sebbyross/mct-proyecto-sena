@@ -1,21 +1,17 @@
 {% extends "admin.html" %}
-
+{% block title %}Buscar usuario{% endblock %}
 {% block content %}
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <ul class="flashes">
-        {% set category, message = messages[-1] %}
-            <div class="alert alert-{{ category }}" style="background-color: crimson; width: fit-content; color: aliceblue;">{{ message }}</div>
-        </ul>
-    {% endif %}
-{% endwith %}
-
-<form method="POST">
-    <div class="form-group">
-        <label for="id">Id del usuario</label>
-        <input type="number" class="form-control" id="id" name="id" required>
+<div class="card p-4">
+  <h3>Buscar usuario por ID</h3>
+  <form method="POST" action="{{ url_for('search_by_id') }}">
+    <div class="mb-3">
+      <label class="form-label">ID de usuario</label>
+      <input name="id" class="form-control" placeholder="Escribe ID" required>
     </div>
-    <button type="submit" class="btn btn-primary">Buscar</button>
-</form>
-
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" type="submit">Buscar</button>
+      <a class="btn btn-outline-secondary" href="{{ url_for('user_list') }}">Volver</a>
+    </div>
+  </form>
+</div>
 {% endblock %}

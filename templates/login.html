@@ -1,75 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Inventarios MCT</title>
-	<meta charset="utf-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-	<link rel="stylesheet" type="text/css" href="../static/assets/estiloslaeconomia.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-<header>
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="../static/assets/shwemp.jpeg" width="50" height="50" style="border-radius: 100px;"></a>
-            
-            <!-- Botón de colapso -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Contenido colapsable -->
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('regis') }}"><h4>Regístrate</h4></a>
-                </li>
-                <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <h4>Más</h4>
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <li><a class="dropdown-item" href="{{ url_for('contact') }}">Contáctanos</a></li>
-                    <li><a class="dropdown-item" href="{{ url_for('more') }}">Descubre más</a></li>
-                </ul>
-            </li>
-            </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Buscar">
-                <button class="btn btn-light" type="submit">Buscar</button>
-            </form>
+{% extends "admin.html" %}
+{% block title %}Iniciar Sesión - MCT{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card p-4">
+      <h3 class="mb-3">Iniciar Sesión</h3>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="alert alert-warning py-2">{{ messages[0] }}</div>
+        {% endif %}
+      {% endwith %}
+      <form method="POST" action="{{ url_for('login') }}">
+        <div class="mb-3">
+          <label class="form-label">Usuario</label>
+          <input name="username" class="form-control" required>
         </div>
+        <div class="mb-3">
+          <label class="form-label">Contraseña</label>
+          <input name="password" type="password" class="form-control" required>
         </div>
-    </nav>
-</header>
-	<div class="login-container">
-        <form method ="POST">
-            <div class="form-group">
-                <label for="correo">Usuario(nombre)</label>
-                <input type="text" id="user" name="username" required>
-            </div>
-            <p>No compartiremos tu correo con nadie mas</p>
-            <div class="form-group">
-                <label for="password">contraseña:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <button type="submit">iniciar sesion</button>
-            </div>
-        </form>
-        <a href="{{ url_for('regis') }}">¿No tienes una cuenta? Regístrate</a> 
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary" type="submit">Entrar</button>
+          <a class="btn btn-outline-secondary" href="{{ url_for('regis') }}">Registrarse</a>
+        </div>
+      </form>
     </div>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul class="flashes">
-                    {% set category, message = messages[-1] %}
-                    <div class="alert alert-{{ category }}" style="background-color: crimson; width: fit-content; color: aliceblue;">{{ message }}</div>
-                </ul>
-            {% endif %}
-        {% endwith %}
+  </div>
+</div>
+{% endblock %}
     <hr class="section-divider">
     <!--Informacion sobre la gestion de los inventarios al registrarse-->
     <div class="container">

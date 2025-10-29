@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 from openpyxl import Workbook
 import os
 from werkzeug.utils import secure_filename 
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'tu_clave_secreta'
@@ -31,6 +32,44 @@ def add_no_cache_headers(response):
     response.headers["Expires"] = "0"
     return response
 
+def list_whole_db():
+    products_count = users_count = low_stock_count = 0
+    productos = []
+    users = []
+    recent_products = []
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute('SELECT COUNT(*) FROM productos')
+    r = cur.fetchone()
+    products_count = int(r[0]) if r and r[0] is not None else 0
+
+    cur.execute('SELECT COUNT(*) FROM users')
+    r = cur.fetchone()
+    users_count = int(r[0]) if r and r[0] is not None else 0
+
+    cur.execute('SELECT id, nombre, descripcion, precio, stock FROM productos ORDER BY id DESC LIMIT 5')
+    recent_products = cur.fetchall() or []
+
+    cur.execute('SELECT id, nombre, descripcion, precio, stock FROM productos')
+    productos = cur.fetchall() or []
+
+    # low-stock threshold (adjust number if you want)
+    cur.execute('SELECT COUNT(*) FROM productos WHERE stock < %s', (20,))
+    r = cur.fetchone()
+    low_stock_count = int(r[0]) if r and r[0] is not None else 0
+
+    cur.execute('SELECT id, username, password, adminstatus FROM users')
+    users = cur.fetchall() or []
+    return {
+        "products_count": products_count,
+        "users_count": users_count,
+        "low_stock_count": low_stock_count,
+        "productos": productos,
+        "users": users,
+        "recent_products": recent_products
+    }
+
 # RUTAS---------------------------------------------------------
 
 @app.route('/')
@@ -55,17 +94,19 @@ def login():
         if user and bcrypt.check_password_hash(user[2], password):
             session['username'] = username
             session['id'] = id  # Guardar el ID del usuario en la sesión
+
             conn = get_db_connection()
             cur = conn.cursor()
             cur.execute("SELECT adminstatus FROM users WHERE username = %s", (username,))
             adminstatus_result = cur.fetchone()
             cur.close()
+            session['adminstatus'] = int(adminstatus_result[0]) if adminstatus_result and adminstatus_result[0] is not None else 0
 
-            
             # Chequear rol
             if adminstatus_result and adminstatus_result[0] == 1:
                 return redirect(url_for('admin'))
-            else: return redirect(url_for('index'))
+            else:
+                return redirect(url_for('index'))
         else:
             flash('Usuario o contraseña incorrectos')
             return redirect(url_for('login'))
@@ -76,67 +117,67 @@ def login():
 @app.route('/regis', methods=['GET', 'POST'])
 def regis():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+        adminstatus = 1 if request.form.get('adminstatus', '0') == '1' else 0
 
-        # Check si el usuario existe
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
-        existing_user = cur.fetchone()
-        cur.close() 
-
-        if existing_user:
-            # Usuario ya existe
-            flash('El nombre de usuario ya existe. Por favor, elige otro.')
+        if not username or not password:
+            flash('Completa todos los campos')
             return redirect(url_for('regis'))
 
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute('INSERT INTO users (username, password) VALUES (%s, %s)', (username, hashed_password))
-        conn.commit()
-        cur.close() 
+        # hash password (prefer bcrypt if configured)
+        if 'bcrypt' in globals():
+            hashed = bcrypt.generate_password_hash(password).decode('utf-8')
+        else:
+            hashed = generate_password_hash(password)
 
-        flash('Registro exitoso. Por favor, inicia sesión.')
-        return redirect(url_for('login'))
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+            cur.execute('INSERT INTO users (username, password, adminstatus) VALUES (%s, %s, %s)',
+                        (username, hashed, adminstatus))
+            conn.commit()
+            cur.close()
+            conn.close()
+            flash('Usuario registrado correctamente')
+            # if admin created user, go to users list, otherwise to login
+            if session.get('adminstatus') == 1:
+                return redirect(url_for('user_list'))
+            return redirect(url_for('login'))
+        except Exception as e:
+            # keep message short; you can log e elsewhere
+            flash('Error al crear el usuario')
+            return redirect(url_for('regis'))
 
-    response = make_response(render_template('regis.html'))
-    return add_no_cache_headers(response)
-
+    return render_template('regis.html')
 @app.route('/index')
 def index():
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute("SELECT adminstatus FROM users WHERE username = %s", (session['username'],))
     adminstatus_result = cur.fetchone()
-    cur.close()   
+    cur.close()
     if adminstatus_result and adminstatus_result[0] == 1:
         return redirect(url_for('admin'))
 
+    data = list_whole_db()
+
     if 'username' not in session:
-        return redirect(url_for('login')) 
-    response = make_response(render_template('index.html'))
+        return redirect(url_for('login'))
+    response = make_response(render_template('index.html', **data))
     return add_no_cache_headers(response)
-
-@app.route('/productos_user')
-def productos_user():
-
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM productos")
-    productos = cur.fetchall()
-    cur.close()
-    return render_template('productos-user.html', productos=productos)
 
 # FUNCIONES DE ADMINISTRADOR ------------------------------------------------------
 
 @app.route('/admin')
 def admin():
-    if 'username' not in session:
-        return redirect(url_for('login'))
-    response = make_response(render_template('admin.html'))
-    return add_no_cache_headers(response)
+    # require admin
+    if session.get('adminstatus') != 1:
+        return redirect(url_for('index'))
+
+    data = list_whole_db()
+
+    return render_template('admin.html', **data)
 
 @app.route('/users')
 def user_list():
@@ -289,9 +330,17 @@ def editar_usuario(id):
     conn = get_db_connection()
     cur = conn.cursor()
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        adminstatus  = request.form['adminstatus']
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+
+        # safe retrieval: checkbox may be absent when unchecked
+        adminstatus_raw = request.form.get('adminstatus', '0')
+        adminstatus = 1 if str(adminstatus_raw) == '1' else 0
+
+        # optional: prevent an admin from removing their own admin flag
+        if session.get('id') and int(session.get('id')) == int(id) and adminstatus == 0:
+            flash('No puedes quitarte permisos de administrador a ti mismo.')
+            return redirect(url_for('user_list'))
 
         if password:
             hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -393,6 +442,52 @@ def report_pdf():
     p.save()
     buffer.seek(0)
     return send_file(buffer, download_name="reporte_productos.pdf", as_attachment=True)
+
+@app.route('/account', methods=['GET', 'POST'])
+def account():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    message = None
+    if request.method == 'POST':
+        new_username = request.form.get('username', '').strip()
+        new_password = request.form.get('password', '').strip()
+
+        # Try to persist changes using your get_db_connection() helper.
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+            if new_password:
+                # prefer flask-bcrypt when available
+                if 'bcrypt' in globals():
+                    hashed = bcrypt.generate_password_hash(new_password).decode('utf-8')
+                else:
+                    hashed = generate_password_hash(new_password)
+                cur.execute('UPDATE users SET username=%s, password=%s WHERE id=%s',
+                            (new_username or session.get('username'), hashed, session.get('id')))
+            else:
+                cur.execute('UPDATE users SET username=%s WHERE id=%s',
+                            (new_username or session.get('username'), session.get('id')))
+            conn.commit()
+            cur.close()
+            conn.close()
+            message = 'Datos actualizados.'
+            if new_username:
+                session['username'] = new_username
+        except Exception:
+            if new_username:
+                session['username'] = new_username
+                message = 'Usuario actualizado en sesión (sin persistencia).'
+            else:
+                message = 'Sin cambios (no hay BD disponible).'
+
+    # create user object for template
+    user = type('U', (), {})()
+    user.id = session.get('id')
+    user.username = session.get('username')
+    user.adminstatus = session.get('adminstatus', 0)
+
+    return render_template('account.html', user=user, message=message)
 
 if __name__ == '__main__':
     app.run(debug=True)
