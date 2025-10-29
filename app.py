@@ -81,34 +81,40 @@ def login():
 @app.route('/regis', methods=['GET', 'POST'])
 def regis():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+        # checkbox may be absent -> default to '0'
+        adminstatus = 1 if request.form.get('adminstatus', '0') == '1' else 0
 
-        # Check si el usuario existe
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
-        existing_user = cur.fetchone()
-        cur.close() 
-
-        if existing_user:
-            # Usuario ya existe
-            flash('El nombre de usuario ya existe. Por favor, elige otro.')
+        if not username or not password:
+            flash('Completa todos los campos')
             return redirect(url_for('regis'))
 
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute('INSERT INTO users (username, password) VALUES (%s, %s)', (username, hashed_password))
-        conn.commit()
-        cur.close() 
+        # hash password (prefer bcrypt if configured)
+        if 'bcrypt' in globals():
+            hashed = bcrypt.generate_password_hash(password).decode('utf-8')
+        else:
+            hashed = generate_password_hash(password)
 
-        flash('Registro exitoso. Por favor, inicia sesión.')
-        return redirect(url_for('login'))
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+            cur.execute('INSERT INTO users (username, password, adminstatus) VALUES (%s, %s, %s)',
+                        (username, hashed, adminstatus))
+            conn.commit()
+            cur.close()
+            conn.close()
+            flash('Usuario registrado correctamente')
+            # if admin created user, go to users list, otherwise to login
+            if session.get('adminstatus') == 1:
+                return redirect(url_for('user_list'))
+            return redirect(url_for('login'))
+        except Exception as e:
+            # keep message short; you can log e elsewhere
+            flash('Error al crear el usuario')
+            return redirect(url_for('regis'))
 
-    response = make_response(render_template('regis.html'))
-    return add_no_cache_headers(response)
-
+    return render_template('regis.html')
 @app.route('/index')
 def index():
     conn = get_db_connection()
@@ -138,10 +144,46 @@ def productos_user():
 
 @app.route('/admin')
 def admin():
-    if 'username' not in session:
-        return redirect(url_for('login'))
-    response = make_response(render_template('admin.html'))
-    return add_no_cache_headers(response)
+    # require admin
+    if session.get('adminstatus') != 1:
+        return redirect(url_for('index'))
+
+    products_count = users_count = low_stock_count = 0
+    productos = []
+    users = []
+    recent_products = []
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute('SELECT COUNT(*) FROM productos')
+    r = cur.fetchone()
+    products_count = int(r[0]) if r and r[0] is not None else 0
+
+    cur.execute('SELECT COUNT(*) FROM users')
+    r = cur.fetchone()
+    users_count = int(r[0]) if r and r[0] is not None else 0
+
+    cur.execute('SELECT id, nombre, descripcion, precio, stock FROM productos ORDER BY id DESC LIMIT 5')
+    recent_products = cur.fetchall() or []
+
+    cur.execute('SELECT id, nombre, descripcion, precio, stock FROM productos')
+    productos = cur.fetchall() or []
+
+    # low-stock threshold (adjust number if you want)
+    cur.execute('SELECT COUNT(*) FROM productos WHERE stock < %s', (20,))
+    r = cur.fetchone()
+    low_stock_count = int(r[0]) if r and r[0] is not None else 0
+
+    cur.execute('SELECT id, username, password, adminstatus FROM users')
+    users = cur.fetchall() or []
+
+    return render_template('admin.html',
+                           products_count=products_count,
+                           users_count=users_count,
+                           low_stock_count=low_stock_count,
+                           recent_products=recent_products,
+                           productos=productos,
+                           users=users)
 
 @app.route('/users')
 def user_list():

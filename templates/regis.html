@@ -15,6 +15,13 @@
           <label class="form-label">Contraseña</label>
           <input name="password" type="password" class="form-control" required>
         </div>
+        <!--if admin, adding a user as admin is also possible-->
+        {% if session.get('username') and session.get('adminstatus')|int == 1 %}
+        <div class="mb-3 form-check">
+          <input type="checkbox" name="adminstatus" value="1" class="form-check-input" id="adminCheck">
+          <label class="form-check-label" for="adminCheck">Administrador</label>
+        </div>
+        {% endif %}
         <div class="d-flex gap-2">
           <button class="btn btn-success" type="submit">Registrar</button>
           <button class="btn btn-outline-secondary" type="button" onclick="history.back()">Volver</button>
