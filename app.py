@@ -167,16 +167,6 @@ def index():
     response = make_response(render_template('index.html', **data))
     return add_no_cache_headers(response)
 
-@app.route('/productos_user')
-def productos_user():
-
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM productos")
-    productos = cur.fetchall()
-    cur.close()
-    return render_template('productos-user.html', productos=productos)
-
 # FUNCIONES DE ADMINISTRADOR ------------------------------------------------------
 
 @app.route('/admin')

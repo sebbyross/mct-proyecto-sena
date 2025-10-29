@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="d-flex flex-column mb-4">
-  <h2 class="mb-3">Gestión de Productos</h2>
+  <h2 class="mb-3"> {{'Gestión' if session.get('adminstatus')|int == 1 else 'Visualizacion'}} de Productos</h2>
 </div>
 
 
@@ -12,7 +12,9 @@
 <div class="text-muted">IDs: {{ productos[0][0] }} a {{ productos[-1][0] }}</strong></div>
 <div class="d-flex flex-column align-items-end">
     <div class="mb-4">
+      {% if session.get('adminstatus') == 1 %}
       <a href="{{ url_for('agregar_producto') }}" class="btn btn-success me-2">Agregar Producto</a>
+      {% endif %}
       <a href="{{ url_for('search_p_by_id') }}" class="btn btn-outline-secondary">Buscar producto</a>
     </div>
     <div>
@@ -41,10 +43,14 @@
           <td style="max-width:320px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ producto[2] }}</td>
           <td>{{ producto[3] }}</td>
           <td>{{ producto[4] if producto|length > 4 else '-' }}</td>
+          {% if session.get('adminstatus') == 1 %}
           <td class="text-end">
             <a href="{{ url_for('editar_producto', id=producto[0]) }}" class="btn btn-sm btn-outline-primary me-1">Editar</a>
             <a href="{{ url_for('eliminar_producto', id=producto[0]) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Eliminar producto?')">Eliminar</a>
           </td>
+          {% else %}
+          <td class="text-end">-</td>
+          {% endif %}
         </tr>
         {% endfor %}
       </tbody>

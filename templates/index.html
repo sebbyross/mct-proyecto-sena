@@ -11,7 +11,7 @@
           <p class="text-muted mb-0">Gestiona inventarios, usuarios y reportes desde un panel sencillo y potente.</p>
         </div>
         <div>
-          <a class="btn btn-primary me-2" href="{{ url_for('productos_user') }}">Ver Productos</a>
+          <a class="btn btn-primary me-2" href="{{ url_for('productos') }}">Ver Productos</a>
           {% if session.get('adminstatus') == 1 %}
             <a class="btn btn-success" href="{{ url_for('admin') }}">Panel Admin</a>
           {% endif %}
@@ -65,7 +65,7 @@
       </p>
       <div class="mt-3">
         <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('account') }}">Mi cuenta</a>
-        <a class="btn btn-outline-primary btn-sm" href="{{ url_for('productos_user') }}">Ver productos</a>
+        <a class="btn btn-outline-primary btn-sm" href="{{ url_for('productos') }}">Ver productos</a>
       </div>
     </div>
 
