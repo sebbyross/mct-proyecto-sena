@@ -32,6 +32,44 @@ def add_no_cache_headers(response):
     response.headers["Expires"] = "0"
     return response
 
+def list_whole_db():
+    products_count = users_count = low_stock_count = 0
+    productos = []
+    users = []
+    recent_products = []
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute('SELECT COUNT(*) FROM productos')
+    r = cur.fetchone()
+    products_count = int(r[0]) if r and r[0] is not None else 0
+
+    cur.execute('SELECT COUNT(*) FROM users')
+    r = cur.fetchone()
+    users_count = int(r[0]) if r and r[0] is not None else 0
+
+    cur.execute('SELECT id, nombre, descripcion, precio, stock FROM productos ORDER BY id DESC LIMIT 5')
+    recent_products = cur.fetchall() or []
+
+    cur.execute('SELECT id, nombre, descripcion, precio, stock FROM productos')
+    productos = cur.fetchall() or []
+
+    # low-stock threshold (adjust number if you want)
+    cur.execute('SELECT COUNT(*) FROM productos WHERE stock < %s', (20,))
+    r = cur.fetchone()
+    low_stock_count = int(r[0]) if r and r[0] is not None else 0
+
+    cur.execute('SELECT id, username, password, adminstatus FROM users')
+    users = cur.fetchall() or []
+    return {
+        "products_count": products_count,
+        "users_count": users_count,
+        "low_stock_count": low_stock_count,
+        "productos": productos,
+        "users": users,
+        "recent_products": recent_products
+    }
+
 # RUTAS---------------------------------------------------------
 
 @app.route('/')
@@ -83,7 +121,6 @@ def regis():
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
-        # checkbox may be absent -> default to '0'
         adminstatus = 1 if request.form.get('adminstatus', '0') == '1' else 0
 
         if not username or not password:
@@ -121,13 +158,15 @@ def index():
     cur = conn.cursor()
     cur.execute("SELECT adminstatus FROM users WHERE username = %s", (session['username'],))
     adminstatus_result = cur.fetchone()
-    cur.close()   
+    cur.close()
     if adminstatus_result and adminstatus_result[0] == 1:
         return redirect(url_for('admin'))
 
+    data = list_whole_db()
+
     if 'username' not in session:
-        return redirect(url_for('login')) 
-    response = make_response(render_template('index.html'))
+        return redirect(url_for('login'))
+    response = make_response(render_template('index.html', **data))
     return add_no_cache_headers(response)
 
 @app.route('/productos_user')
@@ -148,42 +187,9 @@ def admin():
     if session.get('adminstatus') != 1:
         return redirect(url_for('index'))
 
-    products_count = users_count = low_stock_count = 0
-    productos = []
-    users = []
-    recent_products = []
-    conn = get_db_connection()
-    cur = conn.cursor()
+    data = list_whole_db()
 
-    cur.execute('SELECT COUNT(*) FROM productos')
-    r = cur.fetchone()
-    products_count = int(r[0]) if r and r[0] is not None else 0
-
-    cur.execute('SELECT COUNT(*) FROM users')
-    r = cur.fetchone()
-    users_count = int(r[0]) if r and r[0] is not None else 0
-
-    cur.execute('SELECT id, nombre, descripcion, precio, stock FROM productos ORDER BY id DESC LIMIT 5')
-    recent_products = cur.fetchall() or []
-
-    cur.execute('SELECT id, nombre, descripcion, precio, stock FROM productos')
-    productos = cur.fetchall() or []
-
-    # low-stock threshold (adjust number if you want)
-    cur.execute('SELECT COUNT(*) FROM productos WHERE stock < %s', (20,))
-    r = cur.fetchone()
-    low_stock_count = int(r[0]) if r and r[0] is not None else 0
-
-    cur.execute('SELECT id, username, password, adminstatus FROM users')
-    users = cur.fetchall() or []
-
-    return render_template('admin.html',
-                           products_count=products_count,
-                           users_count=users_count,
-                           low_stock_count=low_stock_count,
-                           recent_products=recent_products,
-                           productos=productos,
-                           users=users)
+    return render_template('admin.html', **data)
 
 @app.route('/users')
 def user_list():
