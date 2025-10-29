@@ -1,4 +1,3 @@
-/* ...existing code... */
 :root{
   --primary-red: #c92b2b;
   --accent-blue: #1e6fbf;
@@ -64,4 +63,3 @@ footer { border-top: 1px solid rgba(255,255,255,0.03); }
   .brand-text { display:none; }
   .nav-logo { height:28px; }
 }
-/* ...existing code... */

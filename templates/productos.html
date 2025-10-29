@@ -10,6 +10,8 @@
   </div>
 </div>
 
+<div class="text-muted">Total de productos: <strong>{{ productos|length }}</strong></div>
+
 {% if productos %}
 <div class="card p-3 mb-3">
   <div class="table-responsive">
@@ -42,8 +44,6 @@
     </table>
   </div>
 </div>
-
-<div class="text-muted">Total de productos: <strong>{{ productos|length }}</strong></div>
 
 {% else %}
 <div class="card p-4 text-center">

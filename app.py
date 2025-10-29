@@ -95,14 +95,12 @@ def login():
             session['username'] = username
             session['id'] = id  # Guardar el ID del usuario en la sesión
 
-            # --- changed: store adminstatus in session so templates can read it ----
             conn = get_db_connection()
             cur = conn.cursor()
             cur.execute("SELECT adminstatus FROM users WHERE username = %s", (username,))
             adminstatus_result = cur.fetchone()
             cur.close()
             session['adminstatus'] = int(adminstatus_result[0]) if adminstatus_result and adminstatus_result[0] is not None else 0
-            # ---------------------------------------------------------------------
 
             # Chequear rol
             if adminstatus_result and adminstatus_result[0] == 1:
