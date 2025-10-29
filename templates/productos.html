@@ -2,18 +2,24 @@
 {% block title %}Productos - MCT{% endblock %}
 {% block content %}
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <h2 class="mb-0">Gestión de Productos</h2>
-  <div>
-    <a href="{{ url_for('agregar_producto') }}" class="btn btn-success me-2">Agregar Producto</a>
-    <a href="{{ url_for('search_p_by_id') }}" class="btn btn-outline-secondary">Buscar producto</a>
-  </div>
+<div class="d-flex flex-column mb-4">
+  <h2 class="mb-3">Gestión de Productos</h2>
 </div>
 
 
 {% if productos %}
 <div class="text-muted">Total de productos: <strong>{{ productos|length }}</strong></div>
 <div class="text-muted">IDs: {{ productos[0][0] }} a {{ productos[-1][0] }}</strong></div>
+<div class="d-flex flex-column align-items-end">
+    <div class="mb-4">
+      <a href="{{ url_for('agregar_producto') }}" class="btn btn-success me-2">Agregar Producto</a>
+      <a href="{{ url_for('search_p_by_id') }}" class="btn btn-outline-secondary">Buscar producto</a>
+    </div>
+    <div>
+      <a href="{{ url_for('report_pdf') }}" class="btn btn-outline-secondary">Reporte PDF</a>
+      <a href="{{ url_for('report_excel') }}" class="btn btn-outline-primary">Reporte Excel</a>
+    </div>
+  </div>
 <div class="card p-3 mb-3">
   <div class="table-responsive">
     <table class="table table-hover align-middle">
