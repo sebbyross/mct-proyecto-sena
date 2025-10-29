@@ -10,9 +10,10 @@
   </div>
 </div>
 
-<div class="text-muted">Total de productos: <strong>{{ productos|length }}</strong></div>
 
 {% if productos %}
+<div class="text-muted">Total de productos: <strong>{{ productos|length }}</strong></div>
+<div class="text-muted">IDs: {{ productos[0][0] }} a {{ productos[-1][0] }}</strong></div>
 <div class="card p-3 mb-3">
   <div class="table-responsive">
     <table class="table table-hover align-middle">
