@@ -1,30 +1,30 @@
 {% extends "admin.html" %}
 {% block title %}Agregar Producto - MCT{% endblock %}
 {% block content %}
-<div class="card p-4"><div class="d-flex justify-content-between align-items-center mb-4">
-  <h3 class="mb-4">Agregar Producto</h3>tión de Productos</h2>
+<div class="card p-4">
+  <h3 class="mb-4">Agregar Producto</h3>
   <form action="{{ url_for('agregar_producto') }}" method="POST" autocomplete="off">
-    <div class="mb-3"> Producto</a> action="{{ url_for('agregar_producto') }}" method="POST" autocomplete="off">
-      <label class="form-label">Nombre</label>r('search_p_by_id') }}" class="btn btn-outline-secondary">Buscar producto</a>
+    <div class="mb-3">
+      <label class="form-label">Nombre</label>
       <input name="nombre" class="form-control" required>
     </div>
     <div class="mb-3">
-      <label class="form-label">Descripción</label><div class="mb-3">
-      <textarea name="descripcion" class="form-control" rows="3"></textarea>n</label>
-    </div>area>
-    <div class="mb-3"> class="table table-hover align-middle">
+      <label class="form-label">Descripción</label>
+      <textarea name="descripcion" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
       <label class="form-label">Precio</label>
       <input name="precio" type="number" step="0.01" class="form-control" required>
-    </div>required>
-    <div class="mb-3"><th>Nombre</th>
-      <label class="form-label">Stock</label>ión</th>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Stock</label>
       <input name="stock" type="number" min="0" class="form-control" required>
     </div>
-<th class="text-end">Acciones</th>
-    <div class="d-flex gap-2">        </tr>
-      <button type="submit" class="btn btn-success">Guardar</button>>
+
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-success">Guardar</button>
       <a href="{{ url_for('productos') }}" class="btn btn-outline-secondary">Cancelar</a>
-    </div>ne-secondary">Cancelar</a>
-  </form>r>
-</div> <td>{{ producto[0] }}</td>
-{% endblock %}    <td>{{ producto[1] }}</td>
+    </div>
+  </form>
+</div>
+{% endblock %}

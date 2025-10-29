@@ -2,20 +2,34 @@
 {% block title %}Editar Usuario - MCT{% endblock %}
 {% block content %}
 <div class="card p-4">
-  <h3>Editar Usuario</h3>
-  <form method="POST" action="{{ url_for('users_editar', id=user[0]) }}">
+  <h3>Editar usuario</h3>
+  {% if user %}
+  <form method="POST" action="{{ url_for('editar_usuario', id=user[0]) }}">
     <div class="mb-3">
       <label class="form-label">Usuario</label>
       <input name="username" class="form-control" value="{{ user[1] }}" required>
     </div>
+    <div class="mb-3">
+      <label class="form-label">Contraseña (dejar en blanco para no cambiar)</label>
+      <input name="password" type="password" class="form-control">
+    </div>
     <div class="mb-3 form-check">
+      {# hide checkbox when editing your own user #}
+      {% if session.get('id')|int != user[0]|int %}
       <input type="checkbox" name="adminstatus" value="1" class="form-check-input" id="adminCheck" {% if user[3]|int == 1 %}checked{% endif %}>
       <label class="form-check-label" for="adminCheck">Administrador</label>
+      {% else %}
+      <input type="hidden" name="adminstatus" value="{{ '1' if user[3]|int == 1 else '0' }}">
+      <div class="form-text">No puedes cambiar tu rol desde aquí.</div>
+      {% endif %}
     </div>
     <div class="d-flex gap-2">
       <button class="btn btn-primary" type="submit">Guardar</button>
-      <a class="btn btn-outline-secondary" href="{{ url_for('users') }}">Cancelar</a>
+      <a class="btn btn-outline-secondary" href="{{ url_for('user_list') }}">Cancelar</a>
     </div>
   </form>
+  {% else %}
+  <div class="alert alert-warning">Usuario no encontrado.</div>
+  {% endif %}
 </div>
 {% endblock %}

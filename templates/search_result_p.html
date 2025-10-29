@@ -3,7 +3,7 @@
 {% block content %}
 <h3>Resultados</h3>
 
-{% if productos %}
+{% if producto %}
 <div class="card p-3">
   <div class="table-responsive">
     <table class="table table-hover align-middle mb-0">
@@ -14,23 +14,23 @@
           <th>Descripción</th>
           <th>Precio</th>
           <th>Stock</th>
-          <th class="text-end">Acciones</th>
+          <th class="text-end"></th>
         </tr>
       </thead>
       <tbody>
-        {% for p in productos %}
         <tr>
-          <td>{{ p[0] }}</td>
-          <td>{{ p[1] }}</td>
-          <td style="max-width:320px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ p[2] }}</td>
-          <td>{{ p[3] }}</td>
-          <td>{{ p[4] if p|length > 4 else '-' }}</td>
+          <td>{{ producto[0] }}</td>
+          <td>{{ producto[1] }}</td>
+          <td style="max-width:320px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ producto[2] }}</td>
+          <td>{{ producto[3] }}</td>
+          <td>{{ producto[4] }}</td>
+          {% if session.get('adminstatus') == 1 %}
           <td class="text-end">
-            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('editar_producto', id=p[0]) }}">Editar</a>
-            <a class="btn btn-sm btn-outline-danger" href="{{ url_for('eliminar_producto', id=p[0]) }}" onclick="return confirm('Eliminar producto?')">Eliminar</a>
+            <a class="btn btn-sm btn-outline-primary" href="{{ url_for('editar_producto', id=producto[0]) }}">Editar</a>
+            <a class="btn btn-sm btn-outline-danger" href="{{ url_for('eliminar_producto', id=producto[0]) }}" onclick="return confirm('Eliminar producto?')">Eliminar</a>
           </td>
+          {% endif %}
         </tr>
-        {% endfor %}
       </tbody>
     </table>
   </div>

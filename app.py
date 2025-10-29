@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 from openpyxl import Workbook
 import os
 from werkzeug.utils import secure_filename 
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'tu_clave_secreta'
@@ -55,17 +56,21 @@ def login():
         if user and bcrypt.check_password_hash(user[2], password):
             session['username'] = username
             session['id'] = id  # Guardar el ID del usuario en la sesión
+
+            # --- changed: store adminstatus in session so templates can read it ----
             conn = get_db_connection()
             cur = conn.cursor()
             cur.execute("SELECT adminstatus FROM users WHERE username = %s", (username,))
             adminstatus_result = cur.fetchone()
             cur.close()
+            session['adminstatus'] = int(adminstatus_result[0]) if adminstatus_result and adminstatus_result[0] is not None else 0
+            # ---------------------------------------------------------------------
 
-            
             # Chequear rol
             if adminstatus_result and adminstatus_result[0] == 1:
                 return redirect(url_for('admin'))
-            else: return redirect(url_for('index'))
+            else:
+                return redirect(url_for('index'))
         else:
             flash('Usuario o contraseña incorrectos')
             return redirect(url_for('login'))
@@ -289,9 +294,17 @@ def editar_usuario(id):
     conn = get_db_connection()
     cur = conn.cursor()
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        adminstatus  = request.form['adminstatus']
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+
+        # safe retrieval: checkbox may be absent when unchecked
+        adminstatus_raw = request.form.get('adminstatus', '0')
+        adminstatus = 1 if str(adminstatus_raw) == '1' else 0
+
+        # optional: prevent an admin from removing their own admin flag
+        if session.get('id') and int(session.get('id')) == int(id) and adminstatus == 0:
+            flash('No puedes quitarte permisos de administrador a ti mismo.')
+            return redirect(url_for('user_list'))
 
         if password:
             hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -393,6 +406,52 @@ def report_pdf():
     p.save()
     buffer.seek(0)
     return send_file(buffer, download_name="reporte_productos.pdf", as_attachment=True)
+
+@app.route('/account', methods=['GET', 'POST'])
+def account():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    message = None
+    if request.method == 'POST':
+        new_username = request.form.get('username', '').strip()
+        new_password = request.form.get('password', '').strip()
+
+        # Try to persist changes using your get_db_connection() helper.
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+            if new_password:
+                # prefer flask-bcrypt when available
+                if 'bcrypt' in globals():
+                    hashed = bcrypt.generate_password_hash(new_password).decode('utf-8')
+                else:
+                    hashed = generate_password_hash(new_password)
+                cur.execute('UPDATE users SET username=%s, password=%s WHERE id=%s',
+                            (new_username or session.get('username'), hashed, session.get('id')))
+            else:
+                cur.execute('UPDATE users SET username=%s WHERE id=%s',
+                            (new_username or session.get('username'), session.get('id')))
+            conn.commit()
+            cur.close()
+            conn.close()
+            message = 'Datos actualizados.'
+            if new_username:
+                session['username'] = new_username
+        except Exception:
+            if new_username:
+                session['username'] = new_username
+                message = 'Usuario actualizado en sesión (sin persistencia).'
+            else:
+                message = 'Sin cambios (no hay BD disponible).'
+
+    # create user object for template
+    user = type('U', (), {})()
+    user.id = session.get('id')
+    user.username = session.get('username')
+    user.adminstatus = session.get('adminstatus', 0)
+
+    return render_template('account.html', user=user, message=message)
 
 if __name__ == '__main__':
     app.run(debug=True)
